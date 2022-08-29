@@ -1,3 +1,4 @@
+import { fabClasses } from '@mui/material';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { DisplayUser } from './models/DisplayUser.interface';
 import { Jwt } from './models/Jwt';
@@ -36,7 +37,13 @@ export const signup = createAsyncThunk('auth/signup', async (user: NewUser, thun
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    reset: (state) => {
+      state.isLoading = false;
+      state.isSuccess = false;
+      state.isError = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(signup.pending, (state) => {
