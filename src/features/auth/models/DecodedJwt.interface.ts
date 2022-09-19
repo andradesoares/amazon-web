@@ -1,6 +1,6 @@
 import { DisplayUser } from './DisplayUser.interface';
 
-export interface DecodeJwt {
+export interface DecodedJwt {
   user: DisplayUser;
   exp: number;
   iat: number;

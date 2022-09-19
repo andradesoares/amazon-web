@@ -1,9 +1,15 @@
-import { fabClasses } from '@mui/material';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { RootState } from '../../store';
 import { DisplayUser } from './models/DisplayUser.interface';
 import { Jwt } from './models/Jwt';
 import { NewUser } from './models/NewUser';
 import authService from './services/auth.service';
+
+const storedUser: string | null = localStorage.getItem('user');
+const user: DisplayUser | null = !!storedUser ? JSON.parse(storedUser) : null;
+
+const storedJWT: string | null = localStorage.getItem('jwt');
+const jwt: Jwt | null = !!storedJWT ? JSON.parse(storedJWT) : null;
 
 interface AsyncState {
   isLoading: boolean;
@@ -21,8 +27,8 @@ const initialState: AuthState = {
   isLoading: false,
   isSuccess: false,
   isError: false,
-  user: null,
-  jwt: null,
+  user,
+  jwt,
   isAuthenticated: false,
 };
 
@@ -60,5 +66,11 @@ export const authSlice = createSlice({
       });
   },
 });
+
+export const { reset } = authSlice.actions;
+
+export const selectedUser = (state: RootState) => {
+  return state.auth;
+};
 
 export default authSlice.reducer;
