@@ -3,6 +3,7 @@ import { RootState } from '../../store';
 import { DisplayUser } from './models/DisplayUser.interface';
 import { Jwt } from './models/Jwt';
 import { NewUser } from './models/NewUser';
+import { SigninUser } from './models/SiginUser.interface';
 import authService from './services/auth.service';
 
 const storedUser: string | null = localStorage.getItem('user');
@@ -40,6 +41,14 @@ export const signup = createAsyncThunk('auth/signup', async (user: NewUser, thun
   }
 });
 
+export const signin = createAsyncThunk('auth/signin', async (user: SigninUser, thunkAPI) => {
+  try {
+    return await authService.signin(user);
+  } catch (error) {
+    return thunkAPI.rejectWithValue('Unable to login');
+  }
+});
+
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -52,6 +61,7 @@ export const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      //SIGNUP
       .addCase(signup.pending, (state) => {
         state.isLoading = true;
       })
@@ -63,6 +73,22 @@ export const authSlice = createSlice({
       .addCase(signup.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
+      })
+      //SIGNIN
+      .addCase(signin.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(signin.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.jwt = action.payload;
+        state.isAuthenticated = true;
+      })
+      .addCase(signin.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.user = null;
+        state.isAuthenticated = false;
       });
   },
 });
