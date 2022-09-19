@@ -29,11 +29,22 @@ const logout = (): void => {
   localStorage.removeItem('jwt');
 };
 
+const verifyJwt = async (jwt: string): Promise<boolean> => {
+  const response = await axios.post(`${process.env.REACT_APP_BASE_API}/auth/verify-jwt`, { jwt });
+
+  if (response.data) {
+    const jwtExpirationMs = response.data.exp * 1000;
+    return jwtExpirationMs > Date.now();
+  }
+
+  return false;
+};
+
 const authService = {
   signup,
   signin,
   logout,
-  // verifyJwt
+  verifyJwt,
 };
 
 export default authService;
