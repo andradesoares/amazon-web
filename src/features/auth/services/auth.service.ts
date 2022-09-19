@@ -24,10 +24,15 @@ const signin = async (user: SigninUser): Promise<Jwt> => {
   return response.data;
 };
 
+const logout = (): void => {
+  localStorage.removeItem('user');
+  localStorage.removeItem('jwt');
+};
+
 const authService = {
   signup,
   signin,
-  // logout,
+  logout,
   // verifyJwt
 };
 
