@@ -52,7 +52,7 @@ const SignInForm: FC = () => {
 
   useEffect(() => {
     if (!isAuthenticated) return;
-    navidate('/');
+    navigate('/');
   }, [isAuthenticated]);
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
