@@ -12,16 +12,18 @@ const signup = async (newUser: NewUser): Promise<DisplayUser | null> => {
   return response.data;
 };
 
-const signin = async (user: SigninUser): Promise<Jwt> => {
+const signin = async (user: SigninUser): Promise<{ jwt: Jwt; user: DisplayUser | null }> => {
   const response = await axios.post(`${process.env.REACT_APP_BASE_API}/auth/signin`, user);
 
   if (response.data) {
     localStorage.setItem('jwt', JSON.stringify(response.data));
     const decodedJwt: DecodedJwt = jwtDecode(response.data.token);
     localStorage.setItem('user', JSON.stringify(decodedJwt));
+
+    return { jwt: response.data, user: decodedJwt.user };
   }
 
-  return response.data;
+  return { jwt: response.data, user: null };
 };
 
 const logout = (): void => {

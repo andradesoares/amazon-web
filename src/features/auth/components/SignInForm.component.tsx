@@ -121,6 +121,7 @@ const SignInForm: FC = () => {
               placeholder="Minimun 6 characters required"
             />
             <Button
+              disabled={!validatePasswordLength(password) || !validateEmail(email)}
               variant="contained"
               style={{
                 marginTop: '16px',
