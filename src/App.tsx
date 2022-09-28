@@ -6,6 +6,7 @@ import HomePage from './pages/Home.page';
 import SingInPage from './pages/SingIn.page';
 import SingUpPage from './pages/SingUp.page';
 import Private from './features/auth/components/Private';
+import CartPage from './pages/Cart.page';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Private page={<HomePage />} />} />
+          <Route path="/cart" element={<Private page={<CartPage />} />} />
           <Route path="/signin" element={<SingInPage />} />
           <Route path="/signup" element={<SingUpPage />} />
           <Route path="*" element={<Navigate replace to="/" />} />
