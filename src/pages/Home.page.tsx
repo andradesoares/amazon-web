@@ -1,33 +1,33 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../hooks/redux/hooks';
-import { logout } from '../features/auth/authSlice';
+import { useEffect } from 'react';
+import Header from '../features/product/components/Header.components';
+import ProductComponent from '../features/product/components/Product.component';
+import { getProducts } from '../features/product/productSlice';
+import { useAppSelector, useAppDispatch } from '../hooks/redux/hooks';
 
 const HomePage = () => {
+  const { cart, products } = useAppSelector((state) => state.product);
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.auth);
-  const navigate = useNavigate();
 
-  const logoutHandler = () => {
-    dispatch(logout());
-  };
+  useEffect(() => {
+    dispatch(getProducts());
+  }, []);
+
   return (
     <div>
-      <h1>Home page</h1>
-      <a
-        onClick={logoutHandler}
+      <Header />
+      <div
         style={{
-          backgroundColor: 'yellow',
-          cursor: 'pointer',
-          height: '40px',
-          width: '60px',
-          padding: '8px',
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '48px',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: '48px',
         }}
-        href="/"
       >
-        Logout
-      </a>
-      {user?.email}
+        {products.length > 0 &&
+          products.map((product) => <ProductComponent key={product._id} product={product} />)}
+      </div>
     </div>
   );
 };
